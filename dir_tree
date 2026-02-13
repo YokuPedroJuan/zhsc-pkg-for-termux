@@ -1,0 +1,13 @@
+zhsc/					# Root directory
+├── zhsc				# Main script
+├── config/
+│   └── pagers.json
+├── lib/
+│   ├── loader.sh		# JSON loader
+│   ├── strategy.sh		# Strategy engine
+│   └── renderer.sh
+├── data/
+│   └── ...				# data of commands
+├── README.md
+└── LICENSE
+

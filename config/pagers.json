@@ -1,0 +1,22 @@
+{
+	"version": "1.0",
+	"priority": ["bat", "less", "cat"],
+	"strategies": {
+		"bat": {
+			"check": "command -v bat",
+			"exec": "bat --paging=always --language=md --style=plain",
+			"fallback": "less"
+		},
+		"less": {
+			"check": "command -v less",
+			"exec": "less -R",
+			"fallback": "cat"
+		},
+		"cat": {
+			"check": "true",
+			"exec": "cat",
+			"fallback": null
+		}
+	}
+}
+
