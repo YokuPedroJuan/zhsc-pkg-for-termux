@@ -1,0 +1,17 @@
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+
+*.tmp
+*.log
+test/
+tmp/
+
+build/
+debian/
+*.deb
