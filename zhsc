@@ -1,0 +1,66 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+set -e
+
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+source "$SCRIPT_DIR/lib/loader.sh"
+source "$SCRIPT_DIR/lib/strategy.sh"
+source "$SCRIPT_DIR/lib/renderer.sh"
+
+load_pager_config "$SCRIPT_DIR/config/pagers.json"
+
+generate_page() {
+	local cmd="$1"
+	local file="$SCRIPT_DIR/data/$cmd.json"
+
+	[ -f "$file" ] || { echo "zhsc: 暂无 '$cmd' 的手册" >&2; return 1; }
+
+	local name=$(json_get_string "$file" "name")
+	local section=$(json_get_string "$file" "section")
+	local zh_name=$(json_get_string "$file" "zh_name")
+	local desc=$(json_get_string "$file" "description")
+
+	render_header "$name" "$section"
+	render_section "名称" "$zh_name - $desc"
+
+	local synopsis=$(json_get_string "$file" "synopsis")
+	[ -n "$synopsis" ] && render_section "语法" "$synopsis"
+
+	local opts=$(json_get_array "$file" "options")
+	if [ ${#opts[@]} -gt 0 ]; then
+		echo ""
+		echo "选项"
+		echo ""
+		local i=0
+		while [ $i -lt ${#opts[@]} ]; do
+			local opt_short=$(echo "${opts[$i]}" | grep -o '"short": *"[^"]*"' | sed 's/.*: *"\([^"]*\)".*/\1/')
+			local opt_desc=$(echo "${opts[$i]}" | grep -o '"desc": *"[^"]*"' | sed 's/.*: *"\([^"]*\)".*/\1/')
+			[ -n "$opt_short" ] && render_option "$opt_short" "$opt_desc"
+			i=$((i+1))
+		done
+	fi
+
+	local examples=$(json_get_array "$file" "examples")
+	if [ ${#examples[@]} -gt 0 ]; then
+		echo ""
+		echo "示例"
+		echo ""
+		local i=0
+		while [ $i -lt ${#examples[@]} ]; do
+			local ex_title=$(echo "${examples[$i]}" | grep -o '"title": *"[^"]*"' | sed 's/.*: *"\([^"]*\)".*/\1/')
+			local ex_cmd=$(echo "${examples[$i]}" | grep -o '"cmd": *"[^"]*"' | sed 's/.*: *"\([^"]*\)".*/\1/')
+			local ex_desc=$(echo "${examples[$i]}" | grep -o '"desc": *"[^"]*"' | sed 's/.*: *"\([^"]*\)".*/\1/')
+			[ -n "$ex_title" ] && render_example "$ex_title" "$ex_cmd" "$ex_desc"
+			i=$((i+1))
+		done
+	fi
+}
+
+main() {
+	local cmd="${1:-}"
+	[ -z "$cmd" ] && { echo "用法: zhsc <命令>"; exit 1; }
+	generate_page "$cmd" | exec_pager
+}
+
+main "$@"
+
