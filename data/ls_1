@@ -1,0 +1,70 @@
+{{sec=1|ls}}
+== desc ==
+'''列出目录中内容。'''列出文件的信息，目录可指定，默认为当前目录。参数-cftuvSUX和--sort都未指定时，列表按照字母顺序排列。
+
+== s&o ==
+{{[参数] ... [目录] ...
+| a, all = 显示所有文件，包括以点号 . 开头的隐藏文件。包含当前目录 . 和父目录 ..。
+| A, almost-all = 显示所有文件，包括隐藏文件，但不显示当前目录 . 和父目录 ..。
+| l = 使用长格式显示文件详细信息：权限、链接数、所有者、组、大小、修改时间、文件名。
+| o = 类似于 l，但不显示组信息。
+| g = 类似于 l，但不显示所有者信息。
+| n, numeric-uid-gid = 类似于 l，但使用数字 UID 和 GID 代替用户名和组名。
+| h, human-readable = 与 l 结合使用，以人类可读的格式显示文件大小（如 1K、234M、2G）。
+| si = 类似于 h，但使用 1000 的幂（KB、MB、GB）而不是 1024 的幂（KiB、MiB、GiB）。
+| s, size = 显示每个文件分配的块大小（以块为单位），块大小可通过 block-size 选项更改。
+| k = 类似于 block-size=1K，以 KiB 为单位显示大小。
+| block-size=SIZE = 以指定 SIZE 为单位显示文件大小，如 block-size=M 以 MiB 为单位。
+| F, classify = 在文件名后附加类型指示符：/ 目录，* 可执行文件，@ 符号链接，| FIFO，= 套接字。
+| p, indicator-style=slash = 仅在目录后附加 /。
+| file-type = 类似于 F，但不附加 *（可执行文件不加标识）。
+| Q, quote-name = 将文件名用双引号括起来，适用于包含特殊字符的文件名。
+| quoting-style=WORD = 使用指定的引用风格，可选值：literal、shell、shell-always、c、escape、locale。
+| U = 不排序，按目录顺序列出。
+| t = 按文件修改时间排序（最近修改的在前）。
+| S = 按文件大小排序（最大的在前）。
+| X = 按文件扩展名字母顺序排序。
+| v = 按版本号自然排序（如 file1, file2, file10）。
+| sort=WORD = 按 WORD 排序：none（U）、size（S）、time（t）、version（v）、extension（X）。
+| time=WORD = 与 l 结合使用时，显示指定时间戳：atime、access、use（访问时间）；ctime、status（状态更改时间）；birth、creation（创建时间，如果支持）。
+| time-style=STYLE = 以指定样式显示时间，如 full-iso、long-iso、iso、locale 等。
+| R, recursive = 递归列出子目录的内容。
+| d, directory = 将目录当作文件而不是列出其内容。常与 l 结合使用以显示目录本身的信息。
+| L, dereference = 当显示符号链接的信息时，显示链接指向的文件信息而不是链接本身。
+| H = 在命令行上指定符号链接时，显示链接指向的文件信息（类似 L，但只对命令行参数有效）。
+| 1 = 每行只列出一个文件（单列输出）。
+| C = 多列输出（默认行为）。
+| x = 按行而不是按列排序条目（横向输出）。
+| m = 用逗号分隔文件名，以水平流格式输出。
+| width=COLS = 指定屏幕宽度，用于多列输出（默认自动检测）。
+| tabsize=COLS = 指定制表符宽度，默认为8。
+| color[=WHEN] = 使用颜色区分文件类型。WHEN 可以是 always、never 或 auto（默认 auto）。
+| hyperlink = 输出超链接（如果终端支持）。
+| i, inode = 显示每个文件的 inode 号。
+| b, escape = 以八进制转义序列显示文件名中的非打印字符。
+| hide=PATTERN = 隐藏匹配 PATTERN 的文件（不适用于 a 或 A）。
+| ignore=PATTERN = 不要列出匹配 PATTERN 的文件。
+| I, ignore=PATTERN = 同 ignore。
+| group-directories-first = 先列出目录，再列出文件（可结合排序选项）。
+| indicator-style=WORD = 指定文件名后附加的指示符风格：none、slash（p）、file-type（file-type）、classify（F）。
+| show-control-chars = 直接显示控制字符（否则显示为问号或转义序列）。
+| help = 显示帮助信息。
+| version = 显示版本信息。
+}}
+
+== ntc ==
+SIZE 是一个整数和可选单位（示例：10M 是 1010241024）。单位是 K、M、G、T、P、E、Z、Y（1024 的幂）或 KB、MB、...（1000 的幂）。
+
+TIME_STYLE 可以是 'full-iso'、'long-iso'、'iso'、'locale' 或 '+FORMAT'。
+FORMAT 的解释方式与 date(1) 相同。如果 FORMAT 是 FORMAT1<newline>FORMAT2，则 FORMAT1 适用于非最近的文件，FORMAT2 适用于最近的文件。
+以 'posix-' 为前缀的 TIME_STYLE 仅在 POSIX 区域设置之外生效。
+此外，TIME_STYLE 环境变量设置要使用的默认样式。
+
+{{auth|Richard M. Stallman|David MacKenzie}}
+
+{{copyright|gnu-gpl|3+}}
+
+{{also
+| onl-doc = https://www.gnu.org/software/coreutils/ls
+| cmd = info '(coreutils) ls invocation'
+}}
